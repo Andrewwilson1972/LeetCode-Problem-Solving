@@ -1,22 +1,19 @@
-from functools import cache
-
 class Solution:
     def validPalindrome(self, s: str) -> bool:
-        n = len(s)
+        def is_palindrome(l, r):
+            while l < r:
+                if s[l] != s[r]:
+                    return False
+                l += 1
+                r -= 1
+            return True   
 
-        @cache
-        def recur(left, right, k):
-            if left >= right:
-                return True
-            res = False
-
-            if s[left] == s[right]:
-                res = res or recur(left+1, right-1, k)
+        left, right = 0, len(s) - 1
+        while left < right:
+            if s[left] != s[right]:
                 
-            if k > 0:
-                res = res or recur(left+1, right, k-1)
-                res = res or recur(left, right-1, k-1)
+                return is_palindrome(left + 1, right) or is_palindrome(left, right - 1)
+            left += 1
+            right -= 1
 
-            return res
-
-        return recur(0, n-1, 1)
+        return True
